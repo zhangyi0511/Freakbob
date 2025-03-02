@@ -1,0 +1,98 @@
+import random
+import time
+
+# para sa text nga slow reveal thing
+def print_slow(text):
+    for letter in text:
+        print(letter, end='', flush=True)
+        time.sleep(0.03)
+    print()
+    
+# interaction w/customer
+def greet_customer(lives):
+    print_slow("\nA hungry customer walks up to the counter.")
+    print_slow("Customer: 'I'd like to order.'")
+    
+    wants_drink= random.choice([True, False])
+
+    if wants_drink:
+       print_slow("Customer: 'I'd also like a drink.'")
+    else:
+       print_slow("Customer: 'No drink for me today, please.'")
+               
+    take_order(lives, wants_drink)
+   
+# takes cust's order
+def take_order(lives, wants_drink):
+    
+    patty_ingredients = ["Lettuce", "Tomato", "Cheese", "Pickles", "Onions", "Bacon"]
+    customer_ingredients = random.sample(patty_ingredients, random.randint(1, len(patty_ingredients)))
+    print_slow(f"Customer: 'I'd like my Krabby Patty with: {', '.join(customer_ingredients)}.' ")
+    
+    print_slow("Make the customer's order by adding the right ingredients.")
+    print_slow(", ".join(patty_ingredients))
+    chosen_ingredients = input("You choices (seperated by commas): ").split(', ')
+    chosen_ingredients = [ingredient.strip() for ingredient in chosen_ingredients]
+    
+    valid_ingredients=[ingredient for ingredient in chosen_ingredients if ingredient in patty_ingredients]
+    
+    if set(valid_ingredients) != set(customer_ingredients):
+        print_slow("The customer is disappointed. You chose the wrong ingredients. You lose ONE life.")
+        lives -= 1
+        
+    print_slow(f"You've made a Krabby Patty with: {', '.join(valid_ingredients)}.")
+    
+    if wants_drink:
+        drink_choice = input("Would you like to add a drink? (y/n): ").lower()
+        if drink_choice != "y":
+                             print_slow("You forgot to give the customer their drink. You lose ONE life.")
+                             lives-= 1
+                             
+    else:
+        drink_choice = input("Would you like to add a drink? (y/n): ").lower()
+        if drink_choice == "y":
+                             print_slow("The customer did NOT want a drink. You lose ONE life.")
+                             lives -= 1
+                             
+    serve_order(lives)
+                             
+def serve_order(lives):
+#diri ang serving thing
+        print_slow("You hand the order to the customer.")
+        print_slow("Customer: 'Thank you so much!'")         
+                    
+        if random.random() < 0.3:
+            plankton_attack(lives)
+        else:
+            print_slow("The Krusty Krab is running smoothly.")
+            
+def plankton_attack(lives):
+    print_slow("Plankton suddenly appears in the kitchen!")
+    choice = input("What will you do? (1) Run after him (2) Ignore him: ")
+    
+    if choice == "1":
+        print_slow("You chase Plankton away and take back the formula.")
+    else:
+        print_slow("Plankton succesfully steals the formula! GAME OVER.")
+        game_over()
+                        
+def game_over():
+    print_slow("GAME OVER!")
+    choice = input("Play again? (y/n):\n")
+    if choice.lower() == "y":
+        start_game
+    else:
+        print_slow("Thanks for playing! See you next time!")
+        exit()
+
+def start_game():
+    lives = 4
+    print_slow("Welcome to the Krusty Krab!")
+    print_slow("Serve customers, protect the secret formula, and make sure you don't mess up!")
+    
+    while lives > 0:
+        greet_customer(lives)
+        
+    game_over()
+    
+start_game()
