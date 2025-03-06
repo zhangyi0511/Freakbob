@@ -1,0 +1,109 @@
+import random
+import time
+
+# TEXT
+def print_slow(text):
+    for letter in text:
+        print(letter, end='', flush = True)
+        time.sleep(0.04)
+    print()
+
+def print_fast(text):
+    for letter in text:
+        print(letter, end='', flush = True)
+        time.sleep(0.01)
+    print()
+
+
+# CUSTOMER INTERACTION
+def greet_customer(lives):
+    print_slow("\nA hungry customer walks up to the counter.")
+    print_slow("CUSTOMER: Is this the Krusty Krab?")
+    print_slow(">> PATRICK: No, this is PATRICK.")
+    print_slow("\nCUSTOMER: ...Oh, Okay. PATRICK,")
+    
+    wants_drink = random.choice([True, False])
+
+    if wants_drink:
+       print_slow("CUSTOMER: I'd like to start off with Kelp Juice.")
+    else:
+       print_slow("CUSTOMER: No drink for me today, please.")
+               
+    take_order(lives, wants_drink)
+   
+# TAKE ORDER
+def take_order(lives, wants_drink):
+    
+    patty_ingredients = ["Lettuce", "Tomato", "Cheese", "Pickles", "Onions", "Bacon"]
+    customer_ingredients = random.sample(patty_ingredients, random.randint(1, len(patty_ingredients)))
+    print_slow(f"CUSTOMER: And I'd like my Krabby Patty with {', '.join(customer_ingredients)}. ")
+   
+    print_slow("\nMake the customer's order by adding the correct ingredients!")
+    print("The Refridgerator includes: ", ", ".join(patty_ingredients))
+    chosen_ingredients = input(">> CHOOSE INGREDIENTS (seperated by commas):  ").split(', ')
+    chosen_ingredients = [ingredient.strip() for ingredient in chosen_ingredients]
+    
+    valid_ingredients = [ingredient for ingredient in chosen_ingredients if ingredient in patty_ingredients]
+    
+    if set(valid_ingredients) != set(customer_ingredients):
+        print_slow("\nThe customer is disappointed! You chose the wrong ingredients.\n >> YOU LOST ONE (1) LIFE.")
+        lives -= 1
+        
+    print_slow(f"You've made a Krabby Patty with {', '.join(valid_ingredients)}!")
+    
+    if wants_drink:
+        drink_choice = input(">> Would you like to add a drink? (Yes/No): ")
+        if drink_choice != "Yes":
+                             print_slow("You forgot to give the customer their drink.\n >> YOU LOST ONE (1) LIFE.")
+                             lives-= 1
+                             
+    else:
+        drink_choice = input("Would you like to add a drink? (Yes/No): ")
+        if drink_choice == "Yes":
+                             print_slow("The customer did NOT want a drink. \n >> YOU LOST ONE (1) LIFE.")
+                             lives -= 1
+                             
+    serve_order(lives)
+                             
+def serve_order(lives):
+#diri ang serving thing
+        print_slow("You hand the order to the customer.")
+        print_slow("CUSTOMER: 'Thank you so much!'")         
+                    
+        if random.random() < 0.3:
+            plankton_attack(lives)
+        else:
+            print_slow("The Krusty Krab is running smoothly.")
+
+# PLANKTON ATTACK
+def plankton_attack(lives):
+    print_slow("PLANKTON suddenly appears in the kitchen!")
+    choice = input(">> What will you do? (1) Run after PLANKTON (2) Ignore PLANKTON: ")
+    
+    if choice == "1":
+        print_slow("You chase Plankton away, and successfully take back the secret formula!")
+    else:
+        print_slow("Plankton succesfully steals the secret formula! Mr. Krabs is Furious, and the Krusty Krab shuts down! \n ----- GAME OVER -----")
+        game_over()
+                        
+def game_over():
+    print_slow("----- GAME OVER -----")
+    choice = input("Play again? (Yes/No):\n")
+    if choice == "Yes":
+        start_game
+    else:
+        print_slow("Thanks for playing! See you next time, PATRICK!")
+        exit()
+
+def start_game():
+    lives = 4
+    print_slow("Welcome to the Krusty Krab, PATRICK!")
+    print_slow("Your best friend, SPONGEBOB, is sick! Today you must take his place and serve customers, protect the secret formula, and make sure you don't mess up!")
+    
+    while lives > 0:
+        greet_customer(lives)
+        
+    game_over()
+    
+start_game()
+
