@@ -21,7 +21,6 @@ def start_game():
 
 # GREET CUSTOMER
 def greet_customer():
-    print("----------")
     print_slow("\nA hungry customer walks up to the counter.")
     print_slow("CUSTOMER: Is this the Krusty Krab?")
     print_slow(">> PATRICK: No, this is PATRICK.")
@@ -79,7 +78,6 @@ def serve_order(order_correct):
         print_slow("The customer takes the food, and storms out the Krusty Krab angrily.")
     
     customer_count += 1
-    
     if random.random() < 0.35:
         plankton_attack()
 
